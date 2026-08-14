@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LDS Conferences — General Conference, Wherever You Are</title>
+  <meta name="description" content="Watch conference live, read and listen to talks going back to the 1800s, follow conference music and newly announced temples, and count down to the next session. Free on the App Store." />
+  <meta property="og:title" content="LDS Conferences — General Conference, Wherever You Are" />
+  <meta property="og:description" content="Live sessions, an archive of talks going back to the 1800s, conference music and temple announcements. Free on iPhone." />
+  <meta property="og:image" content="https://zhiyao92.github.io/lds-conferences-landing/app-icon.png" />
+  <meta property="og:url" content="https://zhiyao92.github.io/lds-conferences-landing/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="app-icon.png" />
+  <style>
+    /* Light only. Never invert — many readers are older and rely on high contrast. */
+    :root {
+      color-scheme: light;
+
+      --green:       #145E4C;  /* 7.6:1 on white */
+      --green-dark:  #0E483A;
+      --green-tint:  #EBF5F1;
+      --green-line:  #BFDDD2;
+
+      --page:        #FFFFFF;
+      --panel:       #F5F8F6;
+      --card:        #FFFFFF;
+      --line:        #DBE2DF;
+
+      --ink:         #16181C;  /* 16.9:1 on white */
+      --ink-soft:    #43484F;  /*  9.3:1 on white */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--page);
+      color: var(--ink);
+      font-size: 19px;      /* larger base than usual, on purpose */
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--green); }
+
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--page);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: 1000px; margin: 0 auto; padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+    .nav-logo img { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); }
+    .nav-logo span { font-weight: 700; font-size: 1.05rem; }
+    .nav-cta {
+      background: var(--green); color: #fff;
+      font-weight: 700; font-size: 1rem;
+      padding: 12px 22px; min-height: 48px;
+      display: inline-flex; align-items: center;
+      border-radius: 12px; text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--green-dark); }
+
+    /* ── HERO ── */
+    .hero { padding: 64px 0 56px; text-align: center; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--green-tint); border: 1px solid var(--green-line);
+      color: var(--green-dark);
+      border-radius: 100px; padding: 8px 20px;
+      font-size: 0.95rem; font-weight: 700;
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(2.1rem, 5.5vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.01em;   /* kept gentle — tight tracking hurts legibility */
+      max-width: 18ch;
+      margin: 0 auto;
+    }
+    .hero-sub {
+      margin: 24px auto 0;
+      font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+      color: var(--ink-soft);
+      max-width: 36ch;
+    }
+    .hero-actions {
+      margin-top: 36px;
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--green); color: #fff;
+      font-weight: 700; font-size: 1.15rem;
+      padding: 18px 36px; min-height: 60px;
+      border-radius: 14px; text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--page); color: var(--ink);
+      border: 2px solid var(--line);
+      font-weight: 600; font-size: 1.05rem;
+      padding: 16px 30px; min-height: 60px;
+      border-radius: 14px; text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+    .hero-note { margin-top: 22px; font-size: 1rem; color: var(--ink-soft); }
+
+    /* ── SECTIONS ── */
+    section { padding: 68px 0; }
+    .panel { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .eyebrow {
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--green); margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 800; line-height: 1.25; letter-spacing: -0.01em;
+      max-width: 22ch;
+    }
+    .lede { margin-top: 16px; font-size: 1.15rem; color: var(--ink-soft); max-width: 60ch; }
+
+    /* ── CARD GRID ── */
+    .grid {
+      margin-top: 40px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 28px;
+    }
+    .card-icon { font-size: 2.1rem; line-height: 1; margin-bottom: 14px; }
+    .card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
+    .card p { font-size: 1.05rem; color: var(--ink-soft); }
+
+    /* ── FEATURE BLOCKS ── */
+    .feature {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+      align-items: center; margin-bottom: 64px;
+    }
+    .feature:last-child { margin-bottom: 0; }
+    .feature h3 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 800; line-height: 1.3; margin-bottom: 14px; }
+    .feature p { font-size: 1.1rem; color: var(--ink-soft); }
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .tag {
+      background: var(--green-tint); border: 1px solid var(--green-line); color: var(--green-dark);
+      border-radius: 100px; padding: 7px 16px; font-size: 0.98rem; font-weight: 600;
+    }
+
+    /* Sample panel — a plain, readable mock of what the app shows */
+    .sample {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 18px; padding: 30px 28px;
+    }
+    .sample-label {
+      font-size: 0.9rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--green); margin-bottom: 8px;
+    }
+    .sample-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 18px; }
+    .sample-row {
+      border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px 18px; margin-bottom: 10px;
+      font-size: 1.08rem; font-weight: 600;
+    }
+    .sample-row span { display: block; font-size: 0.98rem; font-weight: 400; color: var(--ink-soft); margin-top: 2px; }
+    .sample-row.live { background: var(--green-tint); border-color: var(--green-line); }
+    .sample-foot { margin-top: 16px; font-size: 1rem; color: var(--ink-soft); }
+
+    .countdown { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cd-box {
+      flex: 1; min-width: 84px; text-align: center;
+      background: var(--green-tint); border: 1px solid var(--green-line);
+      border-radius: 12px; padding: 16px 10px;
+    }
+    .cd-num { font-size: 1.9rem; font-weight: 800; color: var(--green-dark); line-height: 1.1; }
+    .cd-label { font-size: 0.92rem; color: var(--ink-soft); margin-top: 2px; }
+
+    /* ── STEPS ── */
+    .steps { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      font-size: 1.2rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .step h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 1.05rem; color: var(--ink-soft); }
+
+    /* ── CTA ── */
+    .cta { text-align: center; padding: 80px 0; }
+    .cta img { width: 96px; height: 96px; border-radius: 22px; border: 1px solid var(--line); margin: 0 auto 26px; display: block; }
+    .cta h2 { margin: 0 auto 16px; max-width: 20ch; }
+    .cta p { color: var(--ink-soft); max-width: 46ch; margin: 0 auto 34px; font-size: 1.15rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 0 56px; border-top: 1px solid var(--line);
+      font-size: 1rem; color: var(--ink-soft); text-align: center;
+    }
+    .footer-links { display: flex; gap: 22px; flex-wrap: wrap; justify-content: center; margin-bottom: 14px; }
+    .footer-links a { font-weight: 600; }
+    .disclaimer { max-width: 62ch; margin: 18px auto 0; font-size: 0.95rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      body { font-size: 18px; }
+      .feature { grid-template-columns: 1fr; gap: 32px; }
+      .feature.flip .feature-text { order: -1; }
+      h1, h2 { max-width: 100%; }
+      .nav-logo span { display: none; }
+      .btn-primary, .btn-secondary { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    /* ── IN-APP BROWSER NOTICE ── */
+    #iab { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; padding: 24px; }
+    #iab.show { display: flex; }
+    .iab-card { background: #fff; border-radius: 18px; padding: 30px 26px; max-width: 420px; width: 100%; }
+    .iab-card h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; }
+    .iab-card p { font-size: 1.05rem; color: var(--ink-soft); margin-bottom: 20px; }
+    .iab-step { display: flex; gap: 14px; align-items: center; background: var(--panel); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; font-size: 1.02rem; }
+    .iab-step b { width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.95rem; }
+    .iab-dismiss { width: 100%; margin-top: 14px; padding: 15px; min-height: 52px; background: #fff; border: 2px solid var(--line); border-radius: 12px; font-size: 1.05rem; font-weight: 600; color: var(--ink-soft); cursor: pointer; font-family: inherit; }
+  </style>
+</head>
+<body>
+
+<!-- IN-APP BROWSER NOTICE -->
+<div id="iab">
+  <div class="iab-card">
+    <h3>Please open this page in Safari</h3>
+    <p>This app browser cannot open the App Store. Switching takes a moment.</p>
+    <div class="iab-step"><b>1</b><div>Tap the <strong>&#8943;</strong> menu at the top right</div></div>
+    <div class="iab-step"><b>2</b><div>Choose <strong>Open in browser</strong></div></div>
+    <div class="iab-step"><b>3</b><div>Tap <strong>Download Free</strong></div></div>
+    <button class="iab-dismiss" onclick="document.getElementById('iab').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">
+      <img src="app-icon.png" alt="LDS Conferences app icon" />
+      <span>LDS Conferences</span>
+    </a>
+    <a class="nav-cta" href="https://apps.apple.com/app/id1483787977">Download Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap" id="top">
+  <section class="hero">
+    <div class="hero-badge">Free on iPhone and iPad</div>
+    <h1>General Conference, wherever you are</h1>
+    <p class="hero-sub">
+      Watch the sessions live, then read or listen to every talk again
+      afterwards — including talks going back to the 1800s.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://apps.apple.com/app/id1483787977">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        Download Free
+      </a>
+      <a class="btn-secondary" href="#inside">See what is inside</a>
+    </div>
+    <p class="hero-note">Read or listen &nbsp;·&nbsp; Saves across your iPhone and iPad</p>
+  </section>
+</div>
+
+<!-- WHY -->
+<div class="panel">
+  <div class="wrap">
+    <section>
+      <p class="eyebrow">Why members use it</p>
+      <h2>Conference is easy to miss and hard to find again</h2>
+      <p class="lede">
+        Sessions come around twice a year, often at an awkward hour where you
+        live. And when a talk comes to mind months later, finding it again is
+        rarely simple. This app keeps all of it in one place.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">&#128250;</div>
+          <h3>Watch it live</h3>
+          <p>Each session streams in the app, so you can follow along from anywhere in the world.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128218;</div>
+          <h3>Every talk, kept</h3>
+          <p>An archive reaching back to the 1800s. Search by speaker, session or subject.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#127911;</div>
+          <h3>Read or listen</h3>
+          <p>Read a talk on the train, or listen while you drive, cook or walk.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="wrap">
+  <section id="inside">
+    <p class="eyebrow">What is inside</p>
+    <h2>Everything from conference weekend, in one app</h2>
+    <div style="height:44px"></div>
+
+    <div class="feature">
+      <div class="feature-text">
+        <h3>Live sessions and a countdown</h3>
+        <p>
+          See exactly how long until the next session begins, and open the
+          broadcast when it starts. No hunting for a link on the morning.
+        </p>
+        <div class="tags">
+          <span class="tag">Live broadcast</span>
+          <span class="tag">Session countdown</span>
+          <span class="tag">Reminders</span>
+          <span class="tag">Home Screen widget</span>
+        </div>
+      </div>
+      <div class="sample">
+        <div class="sample-label">Next session</div>
+        <div class="sample-title">Saturday Morning Session</div>
+        <div class="countdown">
+          <div class="cd-box"><div class="cd-num">12</div><div class="cd-label">Days</div></div>
+          <div class="cd-box"><div class="cd-num">06</div><div class="cd-label">Hours</div></div>
+          <div class="cd-box"><div class="cd-num">41</div><div class="cd-label">Minutes</div></div>
+        </div>
+        <p class="sample-foot">Shown in your own time zone, so you never work it out yourself.</p>
+      </div>
+    </div>
+
+    <div class="feature flip">
+      <div class="sample">
+        <div class="sample-label">Archive</div>
+        <div class="sample-title">Find the talk you remember</div>
+        <div class="sample-row live">Search &#183; &ldquo;patience&rdquo;<span>Across every talk in the archive</span></div>
+        <div class="sample-row">By speaker<span>Follow one voice across many years</span></div>
+        <div class="sample-row">By session<span>Read a session the way it was given</span></div>
+        <div class="sample-row">Saved talks<span>Keep the ones you return to</span></div>
+      </div>
+      <div class="feature-text">
+        <h3>An archive that goes back generations</h3>
+        <p>
+          Talks reaching back to the 19th century, organised by speaker, session
+          and year. Search the words you half-remember and the talk comes up.
+        </p>
+        <div class="tags">
+          <span class="tag">Full text search</span>
+          <span class="tag">Speaker profiles</span>
+          <span class="tag">Saved talks</span>
+          <span class="tag">Reading history</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature">
+      <div class="feature-text">
+        <h3>Music, temples and the moments people remember</h3>
+        <p>
+          Conference music to listen to again, the temples announced in each
+          session, and short summaries when you do not have time for the whole
+          thing.
+        </p>
+        <div class="tags">
+          <span class="tag">Conference music</span>
+          <span class="tag">New temples</span>
+          <span class="tag">Session summaries</span>
+          <span class="tag">Devotionals</span>
+        </div>
+      </div>
+      <div class="sample">
+        <div class="sample-label">Announced this session</div>
+        <div class="sample-title">New temples</div>
+        <div class="sample-row">Kuala Lumpur, Malaysia<span>Announced in general conference</span></div>
+        <div class="sample-row">Sydney South, Australia<span>Announced in general conference</span></div>
+        <div class="sample-row">Cape Town, South Africa<span>Announced in general conference</span></div>
+        <p class="sample-foot">Examples only — the app lists the temples as they are announced.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SYNC -->
+<div class="panel">
+  <div class="wrap">
+    <section>
+      <p class="eyebrow">On every device</p>
+      <h2>Start on your phone, finish on your iPad</h2>
+      <p class="lede">
+        Saved talks and your place in a talk follow you between devices through
+        iCloud. Nothing to set up — sign in to iCloud as you already do.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">&#9729;</div>
+          <h3>Kept in sync</h3>
+          <p>What you save on one device is waiting on the other.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128269;</div>
+          <h3>Larger text</h3>
+          <p>The app follows the text size you have set on your iPhone.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#128276;</div>
+          <h3>Told in advance</h3>
+          <p>A reminder before conference begins, so the weekend does not slip past.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- STEPS -->
+<div class="wrap">
+  <section>
+    <p class="eyebrow">Getting started</p>
+    <h2>Three steps, about one minute</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Tap Download Free</h3>
+        <p>The App Store opens on your iPhone or iPad. The app costs nothing to download.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Turn on reminders</h3>
+        <p>Choose to be told before the next session starts, in your own time zone.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Save your first talk</h3>
+        <p>Anything you save is kept, and follows you to your other devices.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CTA -->
+<div class="panel">
+  <div class="wrap">
+    <section class="cta">
+      <img src="app-icon.png" alt="LDS Conferences" />
+      <h2>Do not miss the next session</h2>
+      <p>Free to download. Start reading and listening straight away.</p>
+      <a class="btn-primary" href="https://apps.apple.com/app/id1483787977">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        Download Free
+      </a>
+    </section>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-links">
+      <a href="https://apps.apple.com/app/id1483787977">App Store</a>
+      <a href="https://zhiyao92.github.io/ios-apps/">More apps</a>
+      <a href="https://zhiyao92.github.io/ios-apps/privacy-policy.html">Privacy</a>
+      <a href="https://zhiyao92.github.io/ios-apps/terms-and-condition.html">Terms</a>
+      <a href="mailto:kelvin.vins@gmail.com">Contact</a>
+    </div>
+    <p>&copy; 2026 Zhi Yao Tan (DaddyCoding)</p>
+    <p class="disclaimer">
+      This app is not an official product of The Church of Jesus Christ of
+      Latter-day Saints. It is an independent study aid.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Facebook and Instagram in-app browsers cannot open the App Store.
+  (function () {
+    if (!/Instagram|FBAN|FBAV|FB_IAB|TikTok|musical_ly/i.test(navigator.userAgent || '')) return;
+    document.querySelectorAll('a[href*="apps.apple.com"]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('iab').classList.add('show');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
